@@ -12,14 +12,15 @@ def encrypt_file_aes(key, filename, chunk_size=64*1024):
     output_filename = filename + '.encrypted'
 
     alphabet = string.ascii_letters + string.digits
-    iv = ''.join(chr(secrets.choice(alphabet)) for i in range(16))
-    encryptor = AES.new(key, AES.MODE_CBC, iv)
+    iv = ''.join(secrets.choice(alphabet) for i in range(16))
+    encryptor = AES.new(key, AES.MODE_CBC,
+                        iv=bytes(iv, "utf-8"))
 
     filesize = os.path.getsize(filename)
     with open(filename, 'rb') as inputfile:
         with open(output_filename, 'wb') as outputfile:
             outputfile.write(struct.pack('<Q', filesize))
-            outputfile.write(iv)
+            outputfile.write(bytes(iv, "utf-8"))
             while True:
                 chunk = inputfile.read(chunk_size)
                 if len(chunk) == 0:
@@ -50,15 +51,16 @@ def encrypt_file_cha(key, filename, chunk_size=64*1024):
     output_filename = filename + '.encrypted'
 
     alphabet = string.ascii_letters + string.digits
-    nonce = ''.join(chr(secrets.choice(alphabet)) for i in range(12))
+    nonce = ''.join(secrets.choice(alphabet) for i in range(12))
+    key = pad(key, 32)
 
-    encryptor = ChaCha20.new(key, nonce)
+    encryptor = ChaCha20.new(key=key, nonce=bytes(nonce, "utf-8"))
     filesize = os.path.getsize(filename)
 
     with open(filename, 'rb') as inputfile:
         with open(output_filename, 'wb') as outputfile:
             outputfile.write(struct.pack('<Q', filesize))
-            outputfile.write(nonce)
+            outputfile.write(bytes(nonce, "utf-8"))
             while True:
                 chunk = inputfile.read(chunk_size)
                 if len(chunk) == 0:
@@ -84,6 +86,10 @@ def decrypt_file_cha(key, filename, chunk_size=24*1024):
             outfile.truncate(origsize)
 
 
-encrypt_file_aes('abcdefghji123456', 'texto.txt')
+encrypt_file_aes(b'abcdefghji123456', 'texto.txt')
 
-decrypt_file_aes('abcdefghji123456', 'texto.txt.encrypted')
+decrypt_file_aes(b'abcdefghji123456', 'texto.txt.encrypted')
+
+encrypt_file_cha(b'abcdefghji123456', 'texto.txt')
+
+decrypt_file_cha(b'abcdefghji123456', 'texto.txt.encrypted')
