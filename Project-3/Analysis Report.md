@@ -99,9 +99,40 @@ At one point, indicated by the package number **445** and **455** of the capture
 
   The prevention for this type of vulnerability passes by implementing **secure session cookies**, ensuring the cookies are unusable once the session is closed. By having comprehensive session management, per example, the service is lacking a way of logging out, one can increase the protection against various attacks, The emplementation of temporary cookies set to expire in a certain time span would also increase changes to resist attacks like _cookie stealing_ and _cookie poisoning_.
 
-### **Resource Development**
+### **Search Open Websites/Domains**
+
+Having failled to gain access to the service via exploiting third party user's credentials or tokens, the attacker began a short reconnaissance in search for open subdomains of the service.
+
+The attacker experimented with names like "**/private**", "**/fdssfdf**" and "**/test**".
 
 ### **Execution**
+
+Having settle with the **/test** page, the attacker began to attempt to inject code into the service.
+
+The attacker was to experiment with **Reflected Cross-Site Scripting**, wich is defined via the [**CWE-79: Improper Neutralization of Input During Web Page Generation**](https://cwe.mitre.org/data/definitions/79.html) passing scripting code through *GET Request* via the URL input
+
+This attack was **successful** !
+
+The fact that this attack worked, exposed the **biggest flaw** of the service, this flaw is located in the **app.py** file, witch is responsible for serving the webpages and responding to *HTTP Request*.
+
+In this file, the following method is trioggered when a ***404 HTTP Error* (Page not found)** occurs
+
+``` python
+@app.errorhandler(404)
+def page_not_found(e):
+  template = '''
+<div class="center-content error">
+<h1>Oops! That page doesn't exist.</h1>
+<pre>%s</pre>
+</div>
+  ''' %  (urllib.parse.unquote(request.url)) # <- !! Unsanatized input !!
+  return render_template_string(template, dir=dir, help=help, locals=locals), 404
+```
+As we can see, and pointed out by the comment, **whatever input** may have been passed as a URL during the *GET Request* that resulted in a *404*, will be **directly** inserted in the HTML that will be returned and displayed to the client.
+
+Additionally, due to the format chosen to insert python variables inside the *string* data, when **double curly braces** are used, the text taken inside the pair, is considered as **pure code** and thus, it **is executed as part of the script**.
+
+#### **Prevention**
 
 ### **Credential Access**
 
