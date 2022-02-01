@@ -105,11 +105,12 @@ Having failled to gain access to the service via exploiting third party user's c
 
 The attacker experimented with names like "**/private**", "**/fdssfdf**" and "**/test**".
 
-### **Execution**
+### **Initial Access**
+
+#### **Exploit Public-Facing Application**
 
 Having settle with the **/test** page, the attacker began to attempt to inject code into the service.
-
-The attacker was to experiment with **Reflected Cross-Site Scripting**, wich is defined via the [**CWE-79: Improper Neutralization of Input During Web Page Generation**](https://cwe.mitre.org/data/definitions/79.html) passing scripting code through *GET Request* via the URL input
+The attacker experiments with **Reflected Cross-Site Scripting**, witch is defined via the [**CWE-79: Improper Neutralization of Input During Web Page Generation**](https://cwe.mitre.org/data/definitions/79.html) passing scripting code through *GET Request* via the URL input
 
 This attack was **successful** !
 
@@ -125,7 +126,7 @@ def page_not_found(e):
 <h1>Oops! That page doesn't exist.</h1>
 <pre>%s</pre>
 </div>
-  ''' %  (urllib.parse.unquote(request.url)) # <- !! Unsanatized input !!
+  ''' %  (urllib.parse.unquote(request.url)) # <-- !! Unsanatized input !!
   return render_template_string(template, dir=dir, help=help, locals=locals), 404
 ```
 As we can see, and pointed out by the comment, **whatever input** may have been passed as a URL during the *GET Request* that resulted in a *404*, will be **directly** inserted in the HTML that will be returned and displayed to the client.
@@ -134,18 +135,54 @@ Additionally, due to the format chosen to insert python variables inside the *st
 
 #### **Prevention**
 
-### **Credential Access**
+The best way to prevent attacks by cross-site scripting is to sanitize any data that is inputed by the user, but no only that, if you need to combine it with other commands, or it will be placed in sensitive location, the form in witch you combine the hardcoded data with the data provided by the user must be secure in a way that converts this dynamic data in pure text, and cannot be interpreted as code to be executed. In few words, all the data provided via text input by the user, must be recognized as a string.
+
+In this particular case, since the service uses Flask, one can utilize the **flask.escape()** to sanitize the input against HTML/Javascript code insertion.
+
+For sanitization, since there are no pages thar require especial characters, this characters can be filtered out as to not cause any disturbance in the code. This is what's demonstrated in the adapted code bellow.
+
+``` python
+app.errorhandler(404)
+def page_not_found(e):
+    template = '''
+ <div class="center-content error">
+ <h1>Oops! That page doesn't exist.</h1>
+ <pre>%s</pre>
+ </div>
+ '''% urllib.parse.unquote(request.url).translate ({ord(c): " " for c in "!@#$%^&*()[]{};:,./<>?\|`~-=_+"})
+ 
+    return render_template_string(template, dir=dir, help=help, locals=locals), 404
+```
 
 ### **Discovery**
 
-### **Collection**
+Now that the attacker can control the website, the focus now lays in trying to explore the server system and figure out what data it can be exfiltrated.
 
+In the process of looking into critical data like the contents of **/etc/shadow** and **/etc/passwd**, and by being able to run commands like **"apt update"**, the attacker now also knows it has **super user** privileges, witch must have been inherited by the **app.py** being put into production under super user access. If this hadn't been done, all of this capabilities would have been negated to the attacker, unfortunately this was not the case.
+
+### **Deploy Container**
+
+The next step for the attacker, was to install Docker. This would prove to be very usefull since it will allow him to install certain tools to further exploit the server.
+
+The Docker container will allow the user to install and use BusyBox in the next steps.
+### **Software Deployment Tools**
+
+As said before, the attacker will use BusyBox for the next steps, but what is BusyBox ?
+
+    BusyBox combines tiny versions of many common UNIX utilities into a single small executable. It provides replacements for most of the utilities you usually find in GNU fileutils, shellutils, etc. The utilities in BusyBox generally have fewer options than their full-featured GNU cousins; however, the options that are included provide the expected functionality and behave very much like their GNU counterparts. BusyBox provides a fairly complete environment for any small or embedded system.
+
+    BusyBox has been written with size-optimization and limited resources in mind. It is also extremely modular so you can easily include or exclude commands (or features) at compile time. This makes it easy to customize your embedded systems
+
+    in https://busybox.net/about.html
+
+With BusyBox the attacker has access to a ful suite of utilities it may need to continue to exploit the system.
 ### **Exfiltration**
 
 ### **Impact**
 
 ## Vulnerabilities
-
+This is just a short list of all the vulnerabilities previously mentioned. See the previous explanations to see where they exist and how they can be mitigated.
 ### CWEs Founded
 
 1. [**CWE-539: Use of Persistent Cookies Containing Sensitive Information**](https://cwe.mitre.org/data/definitions/539.html)
+2. [**CWE-79: Improper Neutralization of Input During Web Page Generation**](https://cwe.mitre.org/data/definitions/79.html)
