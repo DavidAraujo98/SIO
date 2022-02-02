@@ -2,11 +2,11 @@
 
 ## Summary
 
-Following an attack to the services of UA Pintaresto, the team was solicited to preform an analysis in an attempt to bright to light in what way the services were exploited and what data could have been stollen and/or destroyed.
+Following an attack to the services of UA Pintaresto, the team was solicited to preform an analysis in an attempt to bring to light, in what way the services were exploited and what data could have been stollen and/or destroyed.
 
 ## Description
 
-Following detection of an intrusion, by the automatic systems employed by UA Pinteresto, the team responsible for security of this company was not certain of what may, or may not, have happen to they're systems.
+Following the detection of an intrusion, by the automatic systems employed by UA Pinteresto, the team responsible for security of this company was not certain of what may, or may not, have happen to they're systems.
 
 What this team offers as information is that the VM in service was stopped and recorded a **PCAP file** with the past **traffic to and from the VM**.
 
@@ -175,10 +175,19 @@ As said before, the attacker will use BusyBox for the next steps, but what is Bu
 
     in https://busybox.net/about.html
 
-With BusyBox the attacker has access to a ful suite of utilities it may need to continue to exploit the system.
+With BusyBox the attacker has access to a full suite of utilities it may need to continue to exploit the system.
+
+### **Persistence**
+
+When it comes to set a way for future access, the attacker will use a *Boot or Logon Autostart Execution* technique, particularly by setting up a **reverse shell** (can be seen in package **24745** of netmon.pcap) to the IP/Port of **96.127.23.115/5556**. This is possible by adding the command that creates this connection to the **crontab** file, that executes a specific command in a specific time windows, in this case, the attacker set it to be executed whenever possible.
+
 ### **Exfiltration**
 
+As to the data the attacker may have stollen, the actions taken by it indicate that the **passwd** and **shadow** file were explored. Not only that, more importantly, also the **RSA keys for the SSH** tunnelling and the private **SSL certificates** are also exposed and potentially stollen.
 ### **Impact**
+
+In the end, by having exposed all of this data, and now knowing the **admin's password**, since it is **hardcoded in app.py** the attacker placed a images demanding a ransom to be paid in the value of **100 bitcoins** with the threat that, know having access to the system permanently via the reverse shell, the attacker can delete whatever data it choses.
+Finally, the user restart the docker application.
 
 ## Vulnerabilities
 This is just a short list of all the vulnerabilities previously mentioned. See the previous explanations to see where they exist and how they can be mitigated.
@@ -186,3 +195,10 @@ This is just a short list of all the vulnerabilities previously mentioned. See t
 
 1. [**CWE-539: Use of Persistent Cookies Containing Sensitive Information**](https://cwe.mitre.org/data/definitions/539.html)
 2. [**CWE-79: Improper Neutralization of Input During Web Page Generation**](https://cwe.mitre.org/data/definitions/79.html)
+
+## The Team
+
+| Nome                                                        | Número Mecanográfico  |
+| ---                                                         | :---:                 |
+| [David José Araújo Ferreira](https://bit.ly/davidaraujo98)  | 93444                 |
+| [Ana Catarina Correia Filipe]()                             | 93350                 |
