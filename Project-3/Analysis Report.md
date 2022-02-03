@@ -1,5 +1,5 @@
-# Project 3
-
+# Analysis Report of The Attack To UA Pintaresto
+*This report was created using Markdown language has to provide a high level of consistency to the content's format.*
 ## Summary
 
 Following an attack to the services of UA Pintaresto, the team was solicited to preform an analysis in an attempt to bring to light, in what way the services were exploited and what data could have been stollen and/or destroyed.
@@ -83,7 +83,7 @@ At one point, indicated by the package number **445** and **455** of the capture
 
 - **Credential Forgery**
 
-  Since the privious method was proven unsuccessful, the attacker gives un in trying o login into the service, and will try to **hijack the session** of any already logged in user.
+  Since the previous method was proven unsuccessful, the attacker gives up in trying to login into the service, and will try to **hijack the session** of any already logged in user.
 
   For this, the attacker begins (in package number **6658**) a series of **_client-side cookie poisoning_** attacks, in an attempt of a match with any user's cookies an thus hijacking said user's session.
 
@@ -97,11 +97,11 @@ At one point, indicated by the package number **445** and **455** of the capture
 
   This vulnerability can be further explain in the [**CWE-539: Use of Persistent Cookies Containing Sensitive Information**](https://cwe.mitre.org/data/definitions/539.html)
 
-  The prevention for this type of vulnerability passes by implementing **secure session cookies**, ensuring the cookies are unusable once the session is closed. By having comprehensive session management, per example, the service is lacking a way of logging out, one can increase the protection against various attacks, The emplementation of temporary cookies set to expire in a certain time span would also increase changes to resist attacks like _cookie stealing_ and _cookie poisoning_.
+  The prevention for this type of vulnerability passes by implementing **secure session cookies**, ensuring the cookies are unusable once the session is closed. By having comprehensive session management, per example, the service is lacking a way of logging out, one can increase the protection against various attacks. The implementation of temporary cookies set to expire in a certain time span would also increase changes to resist attacks like _cookie stealing_ and _cookie poisoning_.
 
 ### **Search Open Websites/Domains**
 
-Having failled to gain access to the service via exploiting third party user's credentials or tokens, the attacker began a short reconnaissance in search for open subdomains of the service.
+Having failed to gain access to the service via exploiting third party user's credentials or tokens, the attacker began a short reconnaissance in search for open subdomains of the service.
 
 The attacker experimented with names like "**/private**", "**/fdssfdf**" and "**/test**".
 
@@ -110,13 +110,13 @@ The attacker experimented with names like "**/private**", "**/fdssfdf**" and "**
 #### **Exploit Public-Facing Application**
 
 Having settle with the **/test** page, the attacker began to attempt to inject code into the service.
-The attacker experiments with **Reflected Cross-Site Scripting**, witch is defined via the [**CWE-79: Improper Neutralization of Input During Web Page Generation**](https://cwe.mitre.org/data/definitions/79.html) passing scripting code through *GET Request* via the URL input
+The attacker experiments with **Reflected Cross-Site Scripting**, witch is defined via the [**CWE-79: Improper Neutralization of Input During Web Page Generation**](https://cwe.mitre.org/data/definitions/79.html) passing scripting code through *GET Request* via the URL input.
 
 This attack was **successful** !
 
 The fact that this attack worked, exposed the **biggest flaw** of the service, this flaw is located in the **app.py** file, witch is responsible for serving the webpages and responding to *HTTP Request*.
 
-In this file, the following method is trioggered when a ***404 HTTP Error* (Page not found)** occurs
+In this file, the following method is triggered when a ***404 HTTP Error* (Page not found)** occurs
 
 ``` python
 @app.errorhandler(404)
@@ -139,7 +139,7 @@ The best way to prevent attacks by cross-site scripting is to sanitize any data 
 
 In this particular case, since the service uses Flask, one can utilize the **flask.escape()** to sanitize the input against HTML/Javascript code insertion.
 
-For sanitization, since there are no pages thar require especial characters, this characters can be filtered out as to not cause any disturbance in the code. This is what's demonstrated in the adapted code bellow.
+For sanitization, since there are no pages that require especial characters, this characters can be filtered out as to not cause any disturbance in the code. This is what's demonstrated in the adapted code bellow.
 
 ``` python
 app.errorhandler(404)
@@ -162,7 +162,7 @@ In the process of looking into critical data like the contents of **/etc/shadow*
 
 ### **Deploy Container**
 
-The next step for the attacker, was to install Docker. This would prove to be very usefull since it will allow him to install certain tools to further exploit the server.
+The next step for the attacker, was to install Docker. This would prove to be very useful since it will allow him to install certain tools to further exploit the server.
 
 The Docker container will allow the user to install and use BusyBox in the next steps.
 ### **Software Deployment Tools**
