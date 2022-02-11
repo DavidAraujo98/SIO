@@ -118,6 +118,10 @@ The fact that this attack worked, exposed the **biggest flaw** of the service, t
 
 In this file, the following method is triggered when a ***404 HTTP Error* (Page not found)** occurs
 
+<br>
+<br>
+<br>
+
 ``` python
 @app.errorhandler(404)
 def page_not_found(e):
@@ -162,9 +166,24 @@ In the process of looking into critical data like the contents of **/etc/shadow*
 
 ### **Deploy Container**
 
-The next step for the attacker, was to install Docker. This would prove to be very useful since it will allow him to install certain tools to further exploit the server.
+The next step for the attacker, was to install Docker. This would prove to be very useful since it will allow him to install certain tools to further exploit the server. Also, by using a container, the attacker in no longer exposed to certain limitations as defense countermeasures implemented in the system.
 
 The Docker container will allow the user to install and use BusyBox in the next steps.
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 ### **Software Deployment Tools**
 
 As said before, the attacker will use BusyBox for the next steps, but what is BusyBox ?
@@ -189,12 +208,29 @@ As to the data the attacker may have stollen, the actions taken by it indicate t
 In the end, by having exposed all of this data, and now knowing the **admin's password**, since it is **hardcoded in app.py** the attacker placed a images demanding a ransom to be paid in the value of **100 bitcoins** with the threat that, know having access to the system permanently via the reverse shell, the attacker can delete whatever data it choses.
 Finally, the user restart the docker application.
 
+<br>
+
+## Specific MITRE Matriz 
+
+| Initial Access  | Execution | Persistence | Privilege Escalation  | Defense Evasion | Credential Access | Discovery | Lateral Movement | Collection  | Exfiltration  | Impact  |
+| -               | -         | -           | -                     | -               | -                 | -         | -                | -           | -             | -       |
+| Exploit Public-Facing Application  | Command and Scripting Interpreter  | Scheduled Task/Job  | Scheduled Task/Job | Deploy Container | Brute Force | Account Discovery  | Remote Services  | Data From Local System  | Exfiltration Over C2 Channel  | Stored Data Manipulation |
+|  | Deploy Container  |  |  |  | Steal Web Session Cookie  | Container and Resource Discovery  |  |  |  |  |
+|  | Scheduled Task/Job | | | | | | | | | | 
+
+<br>
+
 ## Vulnerabilities
 This is just a short list of all the vulnerabilities previously mentioned. See the previous explanations to see where they exist and how they can be mitigated.
 ### CWEs Founded
 
 1. [**CWE-539: Use of Persistent Cookies Containing Sensitive Information**](https://cwe.mitre.org/data/definitions/539.html)
 2. [**CWE-79: Improper Neutralization of Input During Web Page Generation**](https://cwe.mitre.org/data/definitions/79.html)
+
+<br>
+<br>
+<br>
+<br>
 
 ## The Team
 
