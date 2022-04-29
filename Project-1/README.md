@@ -2,7 +2,9 @@
 
 ## Description
 
-The project is based on the concept of an online store, it is built using Bootstrap 5, CherryPy, Javascript and SQLite3
+The project is based on the concept of an online store. It has two versions: one presents several critical security vulnerabilities, the other is the same system with the vulnerabilities fixed.
+
+It is built using Bootstrap 5, CherryPy, Javascript and SQLite3
 
 ## Vulnerablities
 
