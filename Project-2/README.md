@@ -143,17 +143,17 @@ def logger(username, hash):
 
 #### Login Interface
 
-![login_interface](/images/login_interface.jpg)
+![login_interface](images/login_interface.jpg)
 
 This page is not only used to login the user to the UAP, it is also the same page to receive the data in the UAP authentication protocol with the service, the diference being in the URL
 
 In this case, wher the arguments are **null**, the ajax request is send to the _login_validation()_ method, and if successfull, redirects the user to the **UAP management** page, if the arguments are **not null** as in the image bellow, the **E-CHAP protcol** is performed, and at the end the user will be **ridirected back to the original website**
 
-![login_interface](/images/login_interface_1.jpg)
+![login_interface](images/login_interface_1.jpg)
 
 ### Management
 
-![management_interface](/images/management_interface.jpg)
+![management_interface](images/management_interface.jpg)
 
 In the management page, a user can do simple tasks like, create **new credentials** entries, edit the existing ones and deleting them.
 
@@ -163,7 +163,7 @@ The username of the account to that service will also be needed. This is also fu
 
 Lastly, the password to that services is required. This password is **saved in clear text**, so the hash and other functions needed to perform with in can be accomplished.
 
-![management_interface](/images/management_interface_1.jpg)
+![management_interface](images/management_interface_1.jpg)
 
 ## Encryption and Decryption
 
@@ -323,7 +323,7 @@ At the end, if every transisition evaluated as **correct**, the **last message**
 
 The service upon receiving this token, will search it's user's database for it, when found will **attribute permissions** to the said user, treating it like a logged in user.
 
-![login_token](/images/login_token.jpg)
+![login_token](images/login_token.jpg)
 
 ## Authors
 [**Contribution stats**](https://github.com/detiuaveiro/project-2---authentication-equipa_1/pulse)
