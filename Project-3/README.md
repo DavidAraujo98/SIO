@@ -1,5 +1,8 @@
 # Analysis Report of The Attack To UA Pintaresto
 *This report was created using Markdown language has to provide a high level of consistency to the content's format.*
+
+## Final Grade - 15.3/20
+
 ## Summary
 
 Following an attack to the services of UA Pintaresto, the team was solicited to preform an analysis in an attempt to bring to light, in what way the services were exploited and what data could have been stollen and/or destroyed.
