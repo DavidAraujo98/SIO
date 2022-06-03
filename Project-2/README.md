@@ -1,5 +1,7 @@
 # Project 2
 
+## Final Grade - 20/20
+
 ## Description
 
 In this project we were asked to deliver a application that combines the advantageous characteristics of both a **password manager** as well as providing a **E-CHAP authentication protocol** that is able to communicate with any service that allows it.
