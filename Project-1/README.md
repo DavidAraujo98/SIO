@@ -1,5 +1,7 @@
 # Project 1 - Vulnerabilities
 
+## Final Grade - 20/20
+
 ## Description
 
 The project is based on the concept of an online store. It has two versions: one presents several critical security vulnerabilities, the other is the same system with the vulnerabilities fixed.
